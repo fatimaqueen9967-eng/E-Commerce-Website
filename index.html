@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakHub</title>
+    <link rel="stylesheet" href="./src/output.css">
+
+    <!-- Fonts: Poppins for headings, Inter for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ============ FONTS ============ */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* ================= KEYFRAMES ================= */
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes bounceCart {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.3);
+            }
+
+            50% {
+                transform: scale(0.9);
+            }
+
+            70% {
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        /* ============ UTILITY ANIMATION CLASSES ============ */
+        .animate-fadeInDown {
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .animate-zoomIn {
+            animation: zoomIn 0.6s ease forwards;
+        }
+
+        .animate-float {
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-500 {
+            animation-delay: 0.5s;
+        }
+
+        /* ============ PAGE TRANSITION ============ */
+        .page-section {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* ============ SCROLL REVEAL (Product Cards) ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ NAVBAR LINK UNDERLINE ============ */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0%;
+            height: 2px;
+            background-color: #ef4444;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.text-red-500::after {
+            width: 100%;
+        }
+
+        /* ============ CART BOUNCE ============ */
+        .cart-bounce {
+            animation: bounceCart 0.5s ease;
+        }
+
+        /* ============ TOAST SLIDE ============ */
+        #toast.show {
+            animation: slideInRight 0.4s ease forwards;
+        }
+
+        /* ============ BUTTON PULSE ON HOVER ============ */
+        .btn-glow:hover {
+            animation: pulseGlow 1.2s infinite;
+        }
+
+        /* ============ HAMBURGER ICON ANIMATION ============ */
+        #menuBtn {
+            transition: transform 0.3s ease;
+        }
+
+        #menuBtn.rotate {
+            transform: rotate(90deg);
+        }
+
+        /* ============ MOBILE MENU DROPDOWN ============ */
+        #mobileMenu {
+            animation: fadeInDown 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="bg-gray-950 text-white flex justify-between items-center px-6 py-4 sticky top-0 z-50 shadow-md">
+        <div class="text-2xl font-display font-extrabold tracking-wide">
+            <span class="text-red-500">Sneak</span>Hub
+        </div>
+
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex flex-row space-x-8 font-medium">
+            <li><a href="#" data-page="home" class="nav-link hover:text-red-500 transition">Home</a></li>
+            <li><a href="#" data-page="about" class="nav-link hover:text-red-500 transition">About</a></li>
+            <li><a href="#" data-page="products" class="nav-link hover:text-red-500 transition">Products</a></li>
+            <li><a href="#" data-page="contact" class="nav-link hover:text-red-500 transition">Contact</a></li>
+        </ul>
+
+        <div class="flex items-center gap-3">
+            <!-- Cart Button -->
+            <button id="cartBtn"
+                class="relative flex items-center gap-2 bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 hover:scale-105 transition duration-300">
+                <span id="cartIcon" class="inline-block">🛒</span> <span class="hidden sm:inline">Cart</span>
+                <span id="cartCount"
+                    class="absolute -top-2 -right-2 bg-white text-red-600 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">0</span>
+            </button>
+
+            <!-- Hamburger (Mobile) -->
+            <button id="menuBtn" class="md:hidden text-3xl leading-none">&#9776;</button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <ul id="mobileMenu" class="hidden md:hidden flex-col bg-gray-900 text-white text-center relative z-40">
+        <li><a href="#" data-page="home" class="nav-link block py-3 border-b border-gray-800 hover:bg-gray-800">Home</a>
+        </li>
+        <li><a href="#" data-page="about"
+                class="nav-link block py-3 border-b border-gray-800 hover:bg-gray-800">About</a></li>
+        <li><a href="#" data-page="products"
+                class="nav-link block py-3 border-b border-gray-800 hover:bg-gray-800">Products</a></li>
+        <li><a href="#" data-page="contact" class="nav-link block py-3 hover:bg-gray-800">Contact</a></li>
+    </ul>
+
+    <!-- ================= HOME PAGE ================= -->
+    <section id="page-home" class="page-section">
+        <div
+            class="bg-gradient-to-br from-gray-100 via-white to-red-50 min-h-[550px] flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-14 rounded-2xl shadow-lg mx-4 md:mx-8 my-6 overflow-hidden relative">
+
+            <!-- decorative accent -->
+            <div
+                class="absolute -top-16 -right-16 w-64 h-64 bg-red-100 rounded-full blur-3xl opacity-60 hidden md:block">
+            </div>
+
+            <!-- Left Side -->
+            <div class="max-w-lg text-center md:text-left animate-fadeInDown relative z-10">
+                <p class="uppercase text-red-600 font-semibold tracking-widest text-sm mb-3">New Season Drop</p>
+                <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-[1.1]">
+                    Step Into <span class="text-red-600">Style</span> 👟
+                </h1>
+
+                <p class="text-lg md:text-xl text-gray-700 mt-5 font-medium">
+                    Premium Sneakers Collection
+                </p>
+
+                <p class="text-gray-500 mt-3 leading-relaxed">
+                    Discover the latest sneakers with comfort,
+                    style and amazing discounts. Find your perfect
+                    pair today.
+                </p>
+
+                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <button data-page="products"
+                        class="nav-link btn-glow bg-red-600 text-white px-7 py-3 rounded-lg font-semibold hover:bg-red-700 hover:scale-105 transition duration-300">
+                        Shop Now
+                    </button>
+
+                    <button data-page="about"
+                        class="nav-link border-2 border-gray-900 text-gray-900 px-7 py-3 rounded-lg font-semibold hover:bg-gray-900 hover:text-white hover:scale-105 transition duration-300">
+                        Explore
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="mt-10 md:mt-0 animate-fadeInUp delay-200 relative z-10">
+                <img src="images/shoe.png" alt="Sneaker"
+                    class="w-[260px] sm:w-[340px] md:w-[440px] drop-shadow-2xl hover:scale-105 transition duration-500 animate-float">
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT PAGE ================= -->
+    <section id="page-about" class="page-section hidden">
+        <div class="max-w-4xl mx-auto px-6 py-16 text-center">
+            <h1 class="font-display text-4xl font-bold mb-6">About <span class="text-red-600">SneakHub</span></h1>
+            <p class="text-gray-600 text-lg leading-relaxed mb-4">
+                SneakHub is your one-stop destination for premium sneakers. We bring you the latest
+                styles from top brands, combining comfort, quality and affordability in every pair.
+            </p>
+            <p class="text-gray-600 text-lg leading-relaxed mb-10">
+                Our mission is simple — help you step into style without breaking the bank.
+                Fast delivery, easy returns, and a passion for great footwear is what sets us apart.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+                <div
+                    class="bg-gray-100 rounded-xl p-6 shadow hover:shadow-xl hover:-translate-y-2 transition duration-300 animate-zoomIn delay-100">
+                    <h3 class="text-3xl font-bold text-red-600">500+</h3>
+                    <p class="text-gray-600 mt-2">Products</p>
+                </div>
+                <div
+                    class="bg-gray-100 rounded-xl p-6 shadow hover:shadow-xl hover:-translate-y-2 transition duration-300 animate-zoomIn delay-300">
+                    <h3 class="text-3xl font-bold text-red-600">10k+</h3>
+                    <p class="text-gray-600 mt-2">Happy Customers</p>
+                </div>
+                <div
+                    class="bg-gray-100 rounded-xl p-6 shadow hover:shadow-xl hover:-translate-y-2 transition duration-300 animate-zoomIn delay-500">
+                    <h3 class="text-3xl font-bold text-red-600">24/7</h3>
+                    <p class="text-gray-600 mt-2">Customer Support</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PRODUCTS PAGE ================= -->
+    <section id="page-products" class="page-section hidden">
+        <div class="bg-neutral-50 py-14 px-4 sm:px-8">
+
+            <p class="uppercase text-red-600 font-semibold tracking-widest text-sm text-center mb-2">Shop the collection
+            </p>
+            <h1 class="font-display text-3xl sm:text-4xl font-bold text-center mb-10 text-gray-900">
+                Featured Products
+            </h1>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto">
+
+                <!-- Card 1 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <span
+                        class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">New</span>
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image1.jpg" alt="Nike Air Max"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">Nike Air Max</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(120)</span></p>
+                    <p class="mt-2">
+                        <span class="text-red-600 text-lg font-semibold">$99.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="Nike Air Max" data-price="99.99" data-image="images/image1.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <span
+                        class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full z-10">-15%
+                        Sale</span>
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image2.jpg" alt="Adidas Ultraboost"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">Adidas Ultraboost</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(98)</span></p>
+                    <p class="mt-2 flex items-center gap-2">
+                        <span class="text-red-600 text-lg font-semibold">$199.99</span>
+                        <span class="text-gray-400 line-through text-sm">$235.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="Adidas Ultraboost" data-price="199.99" data-image="images/image2.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <span
+                        class="absolute top-3 left-3 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">Best
+                        Seller</span>
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image3.jpg" alt="Puma RS-X"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">Puma RS-X</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(210)</span></p>
+                    <p class="mt-2">
+                        <span class="text-red-600 text-lg font-semibold">$299.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="Puma RS-X" data-price="299.99" data-image="images/image3.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+                <!-- Card 4 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <span
+                        class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">New</span>
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image4.jpg" alt="Converse Chuck Taylor"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">Converse Chuck Taylor</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(75)</span></p>
+                    <p class="mt-2">
+                        <span class="text-red-600 text-lg font-semibold">$149.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="Converse Chuck Taylor" data-price="149.99" data-image="images/image4.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+                <!-- Card 5 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <span
+                        class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full z-10">-10%
+                        Sale</span>
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image5.jpg" alt="Vans Old Skool"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">Vans Old Skool</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(140)</span></p>
+                    <p class="mt-2 flex items-center gap-2">
+                        <span class="text-red-600 text-lg font-semibold">$116.99</span>
+                        <span class="text-gray-400 line-through text-sm">$129.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="Vans Old Skool" data-price="116.99" data-image="images/image5.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+                <!-- Card 6 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image6.jpg" alt="New Balance 574"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">New Balance 574</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(88)</span></p>
+                    <p class="mt-2">
+                        <span class="text-red-600 text-lg font-semibold">$159.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="New Balance 574" data-price="159.99" data-image="images/image6.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+                <!-- Card 7 -->
+                <div
+                    class="group relative bg-white border border-gray-100 rounded-2xl shadow-sm p-5 hover:scale-105 hover:shadow-xl transition duration-300 reveal">
+                    <span
+                        class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full z-10">-20%
+                        Sale</span>
+                    <button
+                        class="wishlist-btn absolute top-3 right-3 text-2xl z-10 hover:scale-125 transition duration-300">🤍</button>
+                    <div class="h-56 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
+                        <img src="images/image7.jpg" alt="Reebok Classic"
+                            class="max-h-48 object-contain group-hover:scale-110 transition duration-500">
+                    </div>
+                    <h2 class="text-xl font-bold mt-4">Reebok Classic</h2>
+                    <p class="text-yellow-500 mt-2">⭐⭐⭐⭐⭐ <span class="text-gray-400 text-sm">(63)</span></p>
+                    <p class="mt-2 flex items-center gap-2">
+                        <span class="text-red-600 text-lg font-semibold">$151.99</span>
+                        <span class="text-gray-400 line-through text-sm">$189.99</span>
+                    </p>
+                    <button
+                        class="add-to-cart w-full bg-red-600 text-white py-2 rounded-lg mt-4 hover:bg-red-700 hover:scale-[1.02] transition duration-300"
+                        data-name="Reebok Classic" data-price="151.99" data-image="images/image7.jpg">
+                        🛒 Add to Cart
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CONTACT PAGE ================= -->
+    <section id="page-contact" class="page-section hidden">
+        <div class="max-w-3xl mx-auto px-6 py-16">
+            <h1 class="font-display text-3xl sm:text-4xl font-bold text-center mb-4">Get In Touch</h1>
+            <p class="text-gray-600 text-center mb-10">Have a question? We'd love to hear from you.</p>
+
+            <form id="contactForm" class="bg-gray-100 rounded-xl shadow-lg p-6 sm:p-8 space-y-5 animate-fadeInUp">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Full Name</label>
+                    <input type="text" required
+                        class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        placeholder="Your name">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" required
+                        class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        placeholder="you@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Message</label>
+                    <textarea required rows="5"
+                        class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        placeholder="Write your message..."></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 hover:scale-[1.02] transition duration-300 font-semibold">
+                    Send Message
+                </button>
+            </form>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 text-center">
+                <div>
+                    <p class="font-semibold text-gray-800">📍 Address</p>
+                    <p class="text-gray-600 text-sm mt-1">Lahore, Pakistan</p>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-800">📞 Phone</p>
+                    <p class="text-gray-600 text-sm mt-1">+92 300 1234567</p>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-800">✉️ Email</p>
+                    <p class="text-gray-600 text-sm mt-1">support@sneakhub.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-gray-950 text-gray-300 pt-12 pb-6 px-6 md:px-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+
+            <div>
+                <h2 class="font-display text-2xl font-bold text-white mb-3"><span class="text-red-500">Sneak</span>Hub
+                </h2>
+                <p class="text-sm text-gray-400">
+                    Your go-to store for premium sneakers. Style, comfort and quality — all in one place.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-white font-semibold mb-3">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" data-page="home" class="nav-link hover:text-red-500 transition">Home</a></li>
+                    <li><a href="#" data-page="about" class="nav-link hover:text-red-500 transition">About</a></li>
+                    <li><a href="#" data-page="products" class="nav-link hover:text-red-500 transition">Products</a>
+                    </li>
+                    <li><a href="#" data-page="contact" class="nav-link hover:text-red-500 transition">Contact</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-white font-semibold mb-3">Customer Service</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-red-500 transition">Shipping Info</a></li>
+                    <li><a href="#" class="hover:text-red-500 transition">Returns & Exchanges</a></li>
+                    <li><a href="#" class="hover:text-red-500 transition">FAQs</a></li>
+                    <li><a href="#" class="hover:text-red-500 transition">Track Order</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-white font-semibold mb-3">Newsletter</h3>
+                <p class="text-sm text-gray-400 mb-3">Subscribe to get updates on new arrivals & offers.</p>
+                <form id="newsletterForm" class="flex">
+                    <input type="email" required placeholder="Your email"
+                        class="w-full p-2 rounded-l-lg text-gray-900 focus:outline-none">
+                    <button type="submit" class="bg-red-600 px-4 rounded-r-lg hover:bg-red-700 transition">➤</button>
+                </form>
+
+
+                <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
+                    &copy; 2024 SneakHub. All rights reserved.
+                </div>
+    </footer>
+
+    <!-- ================= CART SIDEBAR ================= -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/50 hidden z-40"></div>
+
+    <div id="cartSidebar"
+        class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="flex justify-between items-center p-5 border-b">
+            <h2 class="text-2xl font-bold">Your Cart</h2>
+            <button id="closeCartBtn" class="text-2xl font-bold text-gray-500 hover:text-red-600">&times;</button>
+        </div>
+
+        <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-4">
+            <p id="emptyCartMsg" class="text-gray-500 text-center mt-10">Your cart is empty 🛒</p>
+        </div>
+
+        <div class="border-t p-5">
+            <div class="flex justify-between text-lg font-bold mb-4">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button id="checkoutBtn"
+                class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 hover:scale-[1.02] transition duration-300 font-semibold">
+                Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= TOAST ================= -->
+    <div id="toast"
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-950 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 pointer-events-none transition duration-300 z-50 text-center max-w-[90%]">
+        Item added to cart!
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
